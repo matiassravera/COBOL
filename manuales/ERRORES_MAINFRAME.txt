@@ -1,0 +1,763 @@
+SYSTEM 806 -----> FALTA EL LINK                                         /DVIS11
+SYSTEM 878 -----> REGION                                                /DVIS11
+SYSTEM B37 -----> ESPACIO-ARCHIVO LLENO                                 /DVIS11
+SYSTEM 0C7 -----> DATOS                                                 /DVIS11
+SYSTEM 0C1 -----> NO LINKEDITO EL PGM. POR EJ. NO ENCONTRO UNA RUTINA.  /DVIS11
+SYSTEM 0CB -----> DIVISION POR CEROS                                    /DVIS11
+USER   203 -----> CERO DIVIDIDO CERO                                    /DVIS11
+SYSTEM 203 -----> DIVISION POR CEROS                                    /DVIS11
+SYSTEM 013 -----> DCB                                                   /DVIS11
+SYSTEM 001 -----> DCB                                                   /DVIS11
+SYSTEM 213 -----> DCB TENIA SELECT DE UN SECUENCIAL Y PUSE DD DE UN VSAM/DVIS11
+STATUS 90  -----> FALTA DD                                              /DVIS11
+STATUS 96  -----> FALTA DD                                              /DVIS11
+STATUS 93  -----> RECURSO NO DISPONIBLE                                 /DVIS11
+------------------------------------------------------------------------/DVIS11
+EDIT 0C4   -----> EJECUTAR 'RECOVERY OFF'                               /DVIS11
+------------------------------------------------------------------------/DVIS11
+                    FILE-STATUS  V S A M
+                    ====================
+ EN LA DEFINICION DE UN ARCHIVO VSAM:
+           EL ESPACIO PRIMARIO ES DE 100 EL SEC. DE 50
+           EN EL DISCO PRIMARIO ALOCA 100 Y EXTENT DE 50
+           CUANDO SE QUEDA SIN ESPACIO EN EL PRIMERO CUANDO ALOCA
+           EN EL OTRO DISCO ALOCA PRIMERO 100 Y DESPUES DE 50.
+
+    00     O.K.
+    02     DUPLICATE KEY, AND WITH DUPLICATES SPECIFIED
+    10     NO FURTHER INFORMATION (NO HAY MAS INFORMACION)
+    20     NO FURTHER INFORMATION
+    21     SEQUENCE ERROR
+    22     DUPLICATE KEY, AND DUPLICATE KEYS NOT ALLOWED
+    23     NO RECORD FOUND
+    24     BOUNDARY VIOLATION ON WRITE TO INDEXED OR RELATIVE FILE
+           (SPACE NOT FOUND TO ADD REQUESTED RECORD)
+    30     NO FURTHER INFORMATION
+    34     BOUNDARY VIOLATION ON WRITE TO SEQUENTIAL FILE
+           (SPACE NOT FOUND TO ADD REQUESTED RECORD)
+    90     EXCEPTION CONDITION IS CLOSELY RELATED TO SYSTEM
+           IMPLEMENTATION.
+           FALTA DD.
+    91     AUTHORIZATION FAILURE
+    92     LOGIC ERROR
+    93     RESOURCE NOT AVAILABLE
+    94     NO CURRENT RECORD POINTER FOR SEQUENTIAL REQUEST
+    95     INVALID OR INCOMPLETE FILE INFORMATION
+    96     NO FILE IDENTIFICATION (FALTA DD)
+    97     ARCHIVO ABIERTO (UNICO O.K.)
+
+    9A     FILE LOCK CANNOT BE ACQUIRED (OPEN)
+    9B     REQUEST DENIED TO AVOID DEADLOCK (DTMS)
+    9C     RECORD NO LOCKED (SEQUENTIAL REWRITE AND DELETE)
+    9D     RECORD LOCK CANNOT ACQUIRED (VER MANUAL)
+    9E     WRITE OR REWRITE WOULD HAVE CREATED A DUPLICATE KEY IN AN
+           INDEX NOT SPECIFIED AS RECORD KEY FOR THIS FILE WHICH WAS
+           DEFINED AS NOT ALLOWING DUPLICATES
+    9F     I/O ERROR ON UPDATING INDEX NOT SPECIFIED AS RECORD KEY IN
+           THIS FILE (WRITE, REWRITE, DELETE)
+    9L     QUALIFIED SUCCESS.  (FOR FURTHER INFORMATION ON THE CONDITION,
+           CALL HCERTNCD TO OBTAIN THE RETURN CODE AND THEN CHECK THE
+           APPROPRIATE SYSTEM MESSAGES AND CODES DOCUMENT)
+
+ &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&&
+
+     *** JCL
+ CODES
+
+ USER COMPLETION CODE=203 : 0 DIVIDIDO 0.
+ 001-4  ERROR DE DCB O EL PROGRAMA POSEE UN BLOCK DIF. DE 0.
+ 013-18 FALTA MIEMBRO.-
+ 013-20 ERROR DCB.-
+ 013-34 COMBINACION ERROR EN DCB. INVALID BLOK 0 EN VSAM(PGM).
+ 213-04 EN PGM BUSCA UN SEC. Y EN PROC HAY UN VSAM KSDS.
+ 813-04 ERROR DSN.-
+ 0C1    OPERATION  EXCEPTION.-
+ 0C4    PROTECTION EXCEPTION.- (SUBINDICE DESTRUYE INSTRUCCIONES DE PGM)
+ 0C7    DATA EXCEPTION.-
+ 0CB    DIVISION ERROR.- DIVISION POR 0.
+ B37    ARCHIVO NO ABRE MAS EXTENT.-
+ 322    TIEMPO. VER TIME EN JOB.-
+ 878-10 ERROR DURING GETMAIN (FALTA MEMORIA)
+ L12    EN SORT GRABANDO UN VSAM Y DESCLASIFICADO. VER KEY DEL VSAM
+           Y SORT FIELDS.
+
+ &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&&
+
+ &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&& &&&
+
+     *** TERMINAL
+
+    PARA SACAR LAS PFS DE LA PANTALLA DAR: 'PFSHOW OFF'
+//*******************************************************************
+// EN EL SORT CON INREC LA CLASIFICACION LA HACE SOBRE LA        ****
+// SALIDA--- EN EL OUTREC LO HACE SOBRE LA ENTRADA.              ****
+// PARA AGREGAR UN CARACTER INREC 1,30,C'1' LE AGREGO UN 1 EN LA ****
+// POSICION 31                                                   ****
+// SI AGREGAS 7X LE CLOCOLAS 7 BLANCOS.                          ****
+//*******************************************************************
+* --------|------------------------------------------------------------*
+* 613-08  |MAL POSICIONADA LA CINTA. (I/O ERROR).-                     *
+*         |OCURRE AL LEER/GRABAR ETIQUETA EN TAPE, PUEDE               *
+*         |SER QUE EL LABEL NO ESTE GENERADO.-                      .  *
+*         *SOLUCION: VOLVER A CARGAR LUEGO DE CONTROLAR EL LABEL.-     *
+* --------|------------------------------------------------------------*
+* 637-34  |I/O ERROR DURANTE END-OF-VOLUME EN TAPE.                    *
+*         |REGENERAR LA CINTA.                                         *
+* --------|------------------------------------------------------------*
+* 522     |CANCELA POR TIEMPO.-                                        *
+*         |UN UNIDAD QUEDO EN ESPERA MAS DE 30' . SI ESTO ES NORMAL    *
+*         |CODIFIQUE EN LA EXEC EL PARAMETRO  TIME=1440 .-             *
+*---------|------------------------------------------------------------*
+* 222     |JOB CANCELADO POR EL OPERADOR.-                             *
+*        **SOLUCION: DE ACUERDO AL MOTIVO DE CANCELACION .-            *
+*---------|------------------------------------------------------------*
+* 137     |VERIFICAR EL LABEL TANTO EN READ COMO EN WRITE.             *
+* --------|------------------------------------------------------------*
+* 116     |OPEN ERROR 116. VER SHARE OPTIONS. DEBE SER 2.3.-           *
+*---------|------------------------------------------------------------*
+* 118     |VERIFY OK (EL VSAM ES CERRADO SATISFACTORIAMENTE).          *
+*---------|------------------------------------------------------------*
+* 039-061 |ERROR OPEN 100. GRALMENTE LO DA UN IDCAMS REPRO QUE MANEJA  *
+*         |UN KSDS QUE TIENE AIX. CORRIENDO LUEGO EL BLDIDX QUEDA OK.  *
+*         |EL PASO TERMINA CON COND COD=04.-                           *
+*---------|------------------------------------------------------------*
+* 052-084 |ERROR OPEN 93 (RESOURCE NOT AVAILABLE). EL VSAM EN CUESTION *
+*         |NO SE PUEDE ACCEDER, ENTRE OTRAS CAUSAS, PORQUE:            *
+*         |A) EL VSAM LO TIENE TOMADO EL CICS. SE DEBE CERRAR.-        *
+*         |B) PUEDE SER QUE POR FALTA DE UNA REGION ADECUADA DE UN 93.-*
+*         |C) VER SHARE OPTIONS. DEBE TENER 2.3.                       *
+*         |NOTA: SI ES EN UN SORT DA UN OPEN 168 CON CODE=16.-         *
+*---------|------------------------------------------------------------*
+* 056-084 |OPEN 95. EL VSAM LO ENCUENTRA ABIERTO. SOLUC: VERIFY.       *
+*         |OTRA: EL VSAM ESTA ABIERTO PERO NO TRAE CONSECUENCIAS       *
+*         |(ACOMPA¥ADO POR UN 062-086) (EJ. EN IDCAMS REPRO O EN       *
+*         |ALGUNOS PGMS DE USUARIO QUE NO CHEQUEAN ESA CONDICION).     *
+*---------|------------------------------------------------------------*
+* 062-084 |OPEN 95. EL VSAM LO ENCUENTRA ABIERTO Y LO CIERRA.          *
+*---------|------------------------------------------------------------*
+* 062-086 |'QSAM ERROR AT DISPLACEMENT' Y UN FILE STATUS 92 O 97.      *
+*         |LA SOLUCION ES TIRAR UN VERIFY.-                            *
+*---------|------------------------------------------------------------*
+* 072-053 |SE INTENTA HACER OPEN A UN VSAM QUE ESTA VACIO. ESTE MENSAJE*
+*         |ES ACOMPA¥ADO POR UN 'ERROR OPEN 160' Y EL IDCAMS QUE LO    *
+*         |TRATA TERMINA CON UN COND COD=12.                           *
+*         |EN EL CASO QUE SEA UN SORT EL QUE INTENTE ABRIRLO (SORTIN)  *
+*         |DA UN CODIGO 16 Y POSIBLEMENTE UN CODE S0C1.                *
+*---------|------------------------------------------------------------*
+* 04-203  |QSAM ERROR AT DISPLACEMENT.                                 *
+*         |1) NO HAY MAS ESPACIO EN EL DISCO PARA ALOCAR UNA EXTENT    *
+*         |   SECUNDARIA EN UN VSAM (EN PGMS DE CARDPAC ESTA ACOMPA-   *
+*         |   ¥ADO POR UN CARTEL 'ERROR WRITE - FILENAME').-           *
+*         |2) VERIFICAR QUE LAS KEYS DEL KSDS SEAN LAS CORRECTAS.      *
+*---------|------------------------------------------------------------*
+* A13-10  |PROBLEMAS DE LABEL EN CINTA (SE QUIERE GRABAR UN LABEL Y    *
+*         |EL ANTERIOR NO ESTA EN LA CINTA).                           *
+*         *SOLUCION: CHEQUEAR EL LABEL Y CORREGIR.-                    *
+*---------|------------------------------------------------------------*
+* B37     |NO HAY MAS ESPACIO EN UN SECUENCIAL.-                       *
+*---------|------------------------------------------------------------*
+* D37     |NO HAY MAS ESPACIO EN UN PARTICIONADO.-                     *
+*---------|------------------------------------------------------------*
+* 0C1     |VERIFICAR QUE NO FALTE NINGUNA DD.-                         *
+*         |EN UNA OPERACION DE EXEPCION,NO SE HA ASIGNADO UN CODIGO DE *
+*         |OPERACION O LA OPERACION ASIGNADA NO CORRESPONDE.-          *
+*         |POR LO GENERAL FALTA UNA DD O ALGUNA TARJETA PARAMETRO .-   *
+*        **SOLUCION: VERIFICAR LA DD OMITIDA Y CORREGIR .-             *
+*---------|------------------------------------------------------------*
+* 0C4     |ADRESSING EXCEPTION. SI ES UN PGM QUE TIENE UN SORT INTERNO,*
+*         |VERIFICAR QUE NO HAYA UN 'GO TO' FUERA DEL MISMO.-          *
+*         |ERROR EN DATOS ESPECIFICADOS O MAL DIRECCIONAMIENTO, PUEDE  *
+*         |FALTAR LA PARM O TENER PROBLEMAS DE PROTECCION .-           *
+*        **SOLUCION: CHEQUEAR LA PERDIDA DE ALGUNAS DE LAS SELECTS .LA *
+*         |SOLUCION ESTA EN MANOS DEL PROGRAMADOR .-                   *
+*---------|------------------------------------------------------------*
+* 0C7     |ERROR DE DATOS. EJ: UN CAMPO NUMERICO CONTENER LETRAS O     *
+*         |CARACTERES ESPECIALES .-                                    *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR. REVISAR LOS DATOS.-     *
+*---------|------------------------------------------------------------*
+* 001     |EN CINTA: NO ENCUENTRA ROTULO DE COLA.-                     *
+*         |EN DISCO: POSIBLE DATA CHECK. TAMBIEN PUEDE SER POR LA DCB. *
+*         |VERIFICAR DCB DEL JCL CON LA DEL PGM (LRECL Y BLKSIZE).-    *
+*---------|------------------------------------------------------------*
+* 001-2   |POSIBLE FALTA DE ESPACIO EN FILE.(CODE=001)                 *
+*         |                                                            *
+*---------|------------------------------------------------------------*
+* 013-18  |NO EXISTE MIEMBRO EN EL PARTICIONADO.-                      *
+*---------|------------------------------------------------------------*
+* 013-20  |PROBLEMAS DE DCB POR ALGUNA DE LAS SIGUIENTES CAUSAS:       *
+*         |1) EL BLKSIZE NO ES MULTIPLO DE LA LRECL.                   *
+*         |2) NO COINCIDE LA LRECL DEL PGM CON LA DEL JCL.             *
+*         |3) NO COINCIDE EL BLKSIZE DEL PGM CON EL DEL JCL.           *
+*---------|------------------------------------------------------------*
+* 713-04  |SE INTENTA GRABAR UNA CINTA CON EXPDT NO VENCIDA.-          *
+*---------|------------------------------------------------------------*
+* 80A     |FALTA DE REGION. AGREGAR PARAMETRO 'REGION=2046K' EN EXEC.- *
+*---------|------------------------------------------------------------*
+* 806     |NO SE ENCUENTRA EL MODULO A EJECUTAR. VER JOBLIB/STEPLIB.-  *
+*---------|------------------------------------------------------------*
+* 722     |EXCESO DE LINEAS. SE DEBE CODIFICAR SENTENCIA DE JES2:      *
+*         |/*JOBPARM L=9999 PARA EXTENDER LA CANTIDAD DE LINEAS        *
+*         |GENERADAS EN EL SPOOL. OJO SI EL PGM ESTA LARGANDO UN DUMP. *
+*---------|------------------------------------------------------------*
+* 813     |LABEL ERROR. VERIFICAR NRO LABEL A LEER/GRABAR. POSIBLEMENTE*
+*         |SE INTENTE LEER/GRABAR UN LABEL DETERMINADO, Y EL INMEDIATO *
+*         |ANTERIOR NO EXISTE.-                                        *
+*---------|------------------------------------------------------------*
+* A13-18  |DSN O LABEL BUSACADO NO ENCONTRADO                          *
+* --------|------------------------------------------------------------*
+* B14-0C  |FALTA ESPACIO EN DIRECTORIO , ELIMINAR MIEMBROS EN DESUSO   *
+*         |DE LA BIBLIOTECA Y REALIZAR UN COMPRES DE LA MISMA.-        *
+* --------|------------------------------------------------------------*
+* C03     |OCURRE AL REPETIR MAS DE UNA VEZ UNA MISMA WORK-AREA  ,     *
+*         |  CORREGIR EL JCL.-                                         *
+*---------|------------------------------------------------------------*
+* D37-04  |UN ARCHIVO DE SALIDA , LLENA TODA SU AREA PRIMARIA Y NO     *
+*         |TIENE INCREMENTOS.-                                         *
+*---------|------------------------------------------------------------*
+* E37-04  |FALTA DE ESPACIO EN DISCO, O PUEDE SE EN CINTA SI TIENEN    *
+*         |(RETAIN,,SER=T  ) .-                                        *
+*---------|------------------------------------------------------------*
+* F37     |ERROR DE PROGRAMA .-                                        *
+*---------|------------------------------------------------------------*
+* IEF253I |EN UNA DD QUE REQUIERE ESPACIO EN UN DISPOSITIVO DE ACCESO  *
+*         |DIRECTO,EL DATA NOMBRADO EN EL PARAMETRO 'DSN'ES EL MISMO   *
+*         |QUE UNO EXISTENTE EN LA VTOC DEL VOLUMEN REQUERIDO .-       *
+*         *SOLUCION: SI EL DATA SET ES NUEVO , SELECCIONE UN NOMBRE    *
+*         |UNICO , SI SE INTENTA NOMBRAR A UNA YA EXISTENTE ,CODIFIQUE *
+*         |'OLD' EN EL PARAMETRO 'DISP='.-                             *
+*---------|------------------------------------------------------------*
+* IEF605I |EN UNA SENTENCIA DE JCL, UN OPERANDO NO HA PODIDO ENCONTRAR-*
+*         |SE O NO HA PODIDO SER IDENTIFICADO COMO JOB , EXEC , DD  O  *
+*         |CUALQUIER OPERANDO VALIDO .-                                *
+*         *SOLUCION: CONTROLE QUE EL OPERANDO HAYA SIDO ESCRITO EN     *
+*         |FORMA CORRECTA Y QUE HAYA SIDO PRECEDIDO POR Y SEGUIDO DE   *
+*         |POR LO MENOS UN BLANCO.-                                    *
+*---------|------------------------------------------------------------*
+* IEF612I |EL PROCEDIMIENTO ESPECIFICADO EN EL PRIMER PARAMETRO DE UNA *
+*         |SENTENCIA EXEC , NO PUEDE SER ENCONTRADO EN LA BIBLIOTECA DE*
+*         |PROCEDIMIENTOS O SE HA OMITIDO LA SENTENCIA 'PEND'.-        *
+*         *SOLUCION: CONTROLE QUE EL OPERANDO HAYA SIDO ESCRITO        *
+*         |CORRECTAMENTE Y QUE HAYA SIDO PRECEDIDO POR Y SEGUIDO DE POR*
+*         |LO MENOS UN BLANCO.-                                        *
+*---------|------------------------------------------------------------*
+* 714-0C  |OCURRE AL CERRAR EL ARCHIVO EN UNA CINTA MAGNETICA, EL ERROR*
+*         |SE ORIGINA AL GRABAR LA ETIQUETA DE COLA DESPUES DE LA ORDEN*
+*         |DE CLOSE.                                                   *
+*         *SOLUCION: CAMBIAR DE CARRETE.-                              *
+*---------|------------------------------------------------------------*
+* 722     |CANCELADO POR EXCESO DE WRITER, ESTE ACEPTA HASTA 5000 SALVO
+*         |QUE SE CODIFIQUE /*JOBPARM L=20 (HASTA 20000).              *
+*         *SOLUCION: SI SE TRATA DE UN VUELCO ANALIZAR SU ORIGEN  Y    *
+*         |CONTROLAR EL TRABAJO CON EL PROGRAMADOR ,SI SE TRATA DE UNA *
+*         |SALIDA A GENERAR LA IMAGEN EN UN DISCO.-                    *
+*---------|------------------------------------------------------------*
+* 737     |EL ERROR TIENE LUGAR DURANTE LA TERMINACION DE UN VOLUMEN   *
+*         |O DURANTE LA ALOCACION DE UNA CANTIDAD SECUNDARIA DE MEMORIA*
+*         |REQUERIDA EN EL PARAMETRO SPACE DE LA DD   .-               *
+*         *SOLUCION: CAMBIAR EL VOLUMEN .-                             *
+*---------|------------------------------------------------------------*
+* 804-1   |INDICA FALTA DE MEMORIA EN UN PASO DENTRO DEL PROCEDIMIENTO.*
+*         *SOLUCION: OVERRADIAR LA CANTIDAD DE CILINDROS RESERVADOS.-  *
+*---------|------------------------------------------------------------*
+* 806-04  |NO SE ENCUENTRA UN PROGRAMA EN LA JOBLIB/STEPLIB.-          *
+*         *SOLUCION: VERIFICAR SI FUE PEDIDO CON EL NOMBRE CORRECTO ,  *
+*         | Y COMPROBAR QUE SE HA ESPECIFICADO LA STEPLIB.-            *
+*---------|------------------------------------------------------------*
+* 813-08  |ERROR EN EL DSN.-                                           *
+*         *SOLUCION: COLOCAR EL DSN CORRECTO .-                        *
+*---------|------------------------------------------------------------*
+* 813-04  |FALTA  EL DSN EN DD.                                        *
+*         *SOLUCION: COLOCAR EL DSN .-                                 *
+*---------|------------------------------------------------------------*
+* 837-08  |ERROR DE ENTRADA/SALIDA EN EL OPEN DE UNA CINTA O NO ES     *
+*         |SUFICIENTE LA CANTIDAD DE CINTAS PARA TERMINAR DE GRABAR EL *
+*         |DATASET .-                                                  *
+* --------|------------------------------------------------------------*
+* S90A    |OCURRE AL QUERER GRABAR EN ARCHIVOS YA CERRADOS O SIN ABRIR *
+*         |O EN UN PERFORM CUYA RUTINA LLEVA 'GO TO' Y NO VUELVE.-     *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+* --------|------------------------------------------------------------*
+* 913-18  |EL SISTEMA DE SEGURIDAD (RACF) IMPIDE EL ACCESO AL DATASET  *
+*         |POR FALTA DE AUTORIDAD.-                                    *
+*         *SOLUCION: ENVIAR PERMIT PARA AUTORIZAR EL ACCESO.-          *
+*-------- |------------------------------------------------------------*
+* A13-14  |SE INTENTA LEER UN LABEL Y ESTE NOFUE GENERADO.-            *
+*         *SOLUCION: CHEQUEAR EL LABEL Y CORREGIR.-                    *
+*---------|------------------------------------------------------------*
+* 613-0C  |SE LEE UN ROTULO NO VALIDO DE UNA CINTA .-                  *
+*         *SOLUCION: ASEGURESE QUE SE HAYA CARGADO LA CINTA CORRECTA Y *
+*         |ELLA CONTENGA LABELS STANDARD.-                             *
+*---------|------------------------------------------------------------*
+* 613-10  |OCURRE AL GRABAR UN LABEL EN CINTA.-                        *
+*         *SOLUCION: VOLVER A CARGAR.-                                 *
+*---------|------------------------------------------------------------*
+* 613-14  |OCURRE AL GRABAR EL TAPEMARK DESPUES DE LOS HEADERS.-       *
+*         *SOLUCION: VOLVER A CARGAR.-                                 *
+*---------|------------------------------------------------------------*
+* 614-04  |EL ERROR TIENE LUGAR AL EJECUTAR UNA INSTRUCCION CLOSE EN   *
+*         |ARCHIVOS DE ACCESO DIRECTO,CUANDO VA A GRABAR LA SE¤AL DE   *
+*         |FIN DE ARCHIVO.-                                            *
+*         *SOLUCION: CAMBIE LA UNIDAD.-                                *
+*---------|------------------------------------------------------------*
+* 637-0C  |EN UNA DD CONCATENADA SE HA OMITIDO LA CODIFICACION DE LA   *
+*         |DCB .-                                                      *
+*         *SOLUCION: CODIFICAR LA DCB CORRESPONDIENTE .-               *
+*---------|------------------------------------------------------------*
+* 637-3C  |OCURRE AL POSICIONAR UNA CINTA MAGNETICA EN UN ARCHIVO      *
+*         |CONCATENADO. SI TIENE LABELS STANDARD , EL ERROR SE PRODUCE *
+*         |AL POSICIONAR LOS LABELS, CASO CONTRARIO OCURRE AL          *
+*         |POSICIONAR LOS ARCHIVOS .-                                 *
+*         *SOLUCION: CAMBIAR LA CINTA .-                               *
+*---------|------------------------------------------------------------*
+* 637-04  |OCURRE AL TERMINAR UN VOLUMEN DE UN ARCHIVO EN CINTA O      *
+*         |CONCATENADO CUANDO SE LEE UN ROTULO , SE GRABA UN TAPEMARK  *
+*         |O SE POSICIONA UN VOLUMEN DE CINTA .-                       *
+*         *SOLUCION: VOLVER A CARGAR.-                                 *
+*---------|------------------------------------------------------------*
+* 637-08  |ERROR DE E/S MIENTRAS SE POSICIONA UNA CINTA MAGNETICA      *
+*         |SEGUIDA DE UNA ETIQUETA DE USUARIO.-                        *
+*         *SOLUCION: VOLVER A CARGAR.-                                 *
+*---------|------------------------------------------------------------*
+* 637-10  |OCURRE AL POSICIONAR UNA CINTA MAGNETICA SI EL VOLUMEN      *
+*         |TIENE LABELS STANDARD,CASO CONTRARIO, AL  POSICIONAR EL     *
+*         |ARCHIVO.-                                                   *
+*         *SOLUCION: VOLVER A CARGAR , CAMBIANDO DE UNIDAD .-          *
+*---------|------------------------------------------------------------*
+* 637-20  |ERROR DE E/S AL REBOBINAR  Y DESCARGAR UNA CINTA SIN LA     *
+*         |OPCION 2 Y LA 'DISP=PASS'.-                                 *
+*         *SOLUCION: CORREGIR LA DISP  Y VOLVER A CARGAR.-             *
+*---------|------------------------------------------------------------*
+* S0CA    |OVERFLOW DE UN NUMERO DECIMAL.-                             *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+*---------|------------------------------------------------------------*
+* S0CB    |OCURRE CUANDO SE EFECTUA UNA DIVISION POR CERO, LETRAS O    *
+*         |CARACTERES ESPECIALES.-                                     *
+*         *SOLUCION: REVISAR LOS DATOS .-                              *
+*---------|------------------------------------------------------------*
+* S0CC    |OVERFLOW EN UN NUMERO EXPONENCIAL                           *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+*---------|------------------------------------------------------------*
+* S0CD    |NO EJECUCION DE UN NUMERO EXPONENCIAL.-                     *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+* --------|------------------------------------------------------------*
+* S0CE    |ERROR DE SIGNIFICACION .-                                   *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+* --------|------------------------------------------------------------*
+* S0CF    |DIVISION DE UN NUMERO DE PUNTO FLOTANTE.-                   *
+*         *SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+* --------|------------------------------------------------------------*
+* S0F2    |ERROR DE PROGRAMA O SISTEMA .-          -                   *
+*         *SOLUCION: DETERMINE SI LOS PARAMETROS SUMINISTRADOS POR EL  *
+*         |PROGRAMA SON CORRECTOS. CARGAR NUEVAMENTTE .-               *
+* --------|------------------------------------------------------------*
+* S122    |EL OPERADOR CANCELA EL TRABAJO PERMITIENDO EL VUELCO DE     *
+*         |MEMORIA .-                                                  *
+*         *SOLUCION: AVERIGUAR MOTIVO Y REANUDAR EL JOB OTRA VEZ.-     *
+* --------|------------------------------------------------------------*
+* S137    |EL ERROR OCURRE CUANDO FINALIZA UN VOLUMEN DE CINTA MAGNE-  *
+*         |TICA.-                                                      *
+*---------|------------------------------------------------------------*
+* S137-04 |EL ERROR OCURRE AL ESCRIBIR UNA ETIQUETA DE FIN DE VOLUMEN  *
+*         |O UN TAPEMARK.-                                             *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-06 |OCURRE UN ERROR DE E/S, LEYENDO UNA ETIQUETA DE COLA DE UN  *
+*         |ARCHIVO QUE HA SIDO ABIERTO CON LA OPCION INPUT.-           *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-08 |OCURRE UN ERROR DE E/S, AL POSICIONARSE LA CINTA PARA       *
+*         |PROCESAR UN LABEL.-                                         *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-10 |EL ERROR  OCURRE AL POSICIONARSE EL ULTIMO CARRETE DEL      *
+*         |ARCHIVO EN UNO DE TIPO MULTIVOLUMEN.-                       *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-14 |OCURRE UN ERROR DE E/S AL LEER LA ETIQUETA DE COMIENZO      *
+*         |DE UN ARCHIVO ABIERTO COMO INPUT .-                         *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-18 |OCURRE UN ERROR DE E/S AL POSICIONARSE LA PRIMER CINTA DE   *
+*         |DE UN ARCHIVO MULTIVOLUMEN.-                                *
+*         *SOLUCION: LA CAUSA HA SIDO OPERATIVA, DE MANERA QUE NO HAY  *
+*         | OTRA SOLUCION QUE NO SEA CAMBIAR LA UNIDAD O COLOCAR  LA   *
+*         | OPCION SKEEP (SKP) O ACCEPT (ACC).-                        *
+*---------|------------------------------------------------------------*
+* S137-0C |PROBLEMAS EN EL DISPOSITIVO DE E/S .-                       *
+*         *SOLUCION: VOLVER A CARGAR .-                                *
+*---------|------------------------------------------------------------*
+* S137-1C |SE LEE UNA ETIQUETA DE FIN DE VOLUMEN INVALIDA .-           *
+*         *SOLUCION: EFECTUE CUALQUIER MANIOBRA TENDIENTE A PERMITIR   *
+*         |LEER VOLUMENES YA GENERADOS .-                              *
+*---------|------------------------------------------------------------*
+* S13F    |EL ERROR OCURRE CUANDO QUEREMOS HACER UN RESTART A UN       *
+*         |CHECK POINT.-                                               *
+*         *SOLUCION: APARECE POR CONSOLA.-                             *
+*---------|------------------------------------------------------------*
+* 13F-24  |OCURRE UN ERROR  EN LA LECTURA DE UN ARCHIVO DE CONTROL DE  *
+*         |TRABAJO.-                                                   *
+*         *SOLUCION: INTENTE HACER UN RESTART , SI EL ERROR PERSISTE   *
+*         |INTENTE DAR UNA NUEVA AREA DE TRABAJO.-                     *
+*---------|------------------------------------------------------------*
+* 13F-28  |OCURRE UN ERROR AL PROCESAR LAS ETIQUETAS NO STANDARD.-     *
+*         *SOLUCION: INTENTE HACER UN RESTART .-                       *
+*---------|------------------------------------------------------------*
+* 13F-31  |HA FALLADO EL INTERPRETE DEL SISTEMA .-                     *
+*         *SOLUCION: REINTENTE  .-                                     *
+*---------|------------------------------------------------------------*
+* 13F-32  |EL ERROR OCURRE DURANTE LA INTERPRETACION .-                *
+*        **SOLUCION: REINTENTE  .-                                     *
+*---------|------------------------------------------------------------*
+* 13F-33  |EL ARCHIVO DE CHECKPOINTS SE HA PARTICIONADO Y NO ENCUENTRA *
+*         |LA ENTRADA ESPECIFICADA .-                                  *
+*        **SOLUCION: REVISE EL SYSCHK, ES MUY PROBABLE QUE SE HAYA     *
+*         |COMETIDO UN ERROR AL ESPECIFICARLA,RECUERDE COMO SE ESPECI- *
+*         |CABA ESTA TARJETA //SYSCHK  DD DSN       ,DISP=OLD    .-    *
+*---------|------------------------------------------------------------*
+* 13F-34  |HA PERDIDO UNA DD EN EL PASO DEL RESTART .-                 *
+*        **SOLUCION: COLOQUE LA DD FALTANTE .-                         *
+*---------|------------------------------------------------------------*
+* 13F-37  |NO SE ENCUENTRA UNA ENTRADA DE CHECK POINT.-                *
+*        **SOLUCION: REVISE EL SYSCHK, ES MUY PROBABLE QUE SE HAYA     *
+*         |COMETIDO UN ERROR AL ESPECIFICARLA,RECUERDE COMO SE ESPECI- *
+*         |CABA ESTA TARJETA //SYSCHK  DD DSN       ,DISP=OLD    .-    *
+*---------|------------------------------------------------------------*
+* 13F-38  |EL ERROR SE PRODUCE DURANTE LA ENTRADA O SALIDA DE DATOS DE *
+*         |DE UN CHECK POINT .-                                        *
+*        **SOLUCION: COMIENCE EN UN CHECKPOINT ANTERIOR .-             *
+*---------|------------------------------------------------------------*
+* 03D     |SE INTENTA LEER UN PARTICIONADO COMO INDEX-SECUENCIAL .     *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+*---------|------------------------------------------------------------*
+* 03D-04  |SE ASIGNA UNA INTRUCCION PARA UN ARCHIVO SECUENCIAL INDEXADO*
+*         |EL NUMERO DE SERIE DEL VOLUMEN EN LA CLAUSULA DD NO SE      *
+*         |ESPECIFICA EN EL ORDEN EN QUE HA SIDO CREADO .-             *
+*        **SOLUCION: ESPECIFIQUE EL ORDEN CORRECTO .-                  *
+* --------|------------------------------------------------------------*
+* 03D-08  |SE ASIGNA UNA INTRUCCION PARA UN ARCHIVO SECUENCIAL INDEXADO*
+*         |PERO EL PRIMER VOLUMEN DEL ARCHIVO NO TIENE UN FORMATO 2    *
+*         |DSCB,O SEA UN ARCHIVO GENERADO COMO SECUENCIAL INDEXADO .-  *
+*        **SOLUCION: DEBE SER INDICADA POR EL PROGRAMADOR .-           *
+* --------|------------------------------------------------------------*
+* S0C2   |SE ENCUENTRA UNA OPERACION PRIVILEGIADA EN LA EJECUCION     *
+*         |CUANDO LA CPU SE ENCUENTRA EN ESTADO DE PROBLEMA O BIEN     *
+*         |FALTA UNA DD .-                                             *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR.-                        *
+* --------|------------------------------------------------------------*
+* S0C3   |ERROR DE EJECUCION .-                   -                   *
+*        **SOLUCION: LA SOLUCION LA PROPONE EL PROGRAMADOR .-          *
+* --------|------------------------------------------------------------*
+* S0C5    |PROBLEMAS DE DIRECCIONAMIENTO EN EL SORT DE PROTECCION .-   *
+* --------|------------------------------------------------------------*
+* S0C6    |ERROR EN LAS TARJETAS DE CONTROL . PUEDE FALTAR UNA DD .-   *
+*        **SOLUCION: REVISAR EL JCL.-
+*---------|------------------------------------------------------------*
+* S0C8    |OVERFLOW DE UNA OPERACION DE PUNTO FIJO .-                  *
+*        **SOLUCION: AGRANDAR EL CAMPO .-                              *
+*---------|------------------------------------------------------------*
+* S0C9    |ERROR EN UNA DIVISION DE PUNTO FIJO .-                      *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR .-                       *
+*---------|------------------------------------------------------------*
+* 013-4C  |EN LA ENTRADA DE UN SORT NO SE HA COLOCADO EL DATASET DE    *
+*         |MAYOR BLOQUEO EN PRIMER TERMINO .-                          *
+*        **SOLUCION: COLOCAR EL DATASET DE MAYOR LONGITUD DE BLOQUE EN *
+*         | PRIMER TERMINO .-                                          *
+*---------|------------------------------------------------------------*
+* 013-60  |EN UNA DCB,FIGURA RECFM=F Y BLKSIZE NO ES IGUAL A LRECL. A  *
+*         |MENUDO FALTA CODIFICAR LA RECFM EN LA DCB.-                 *
+*        **SOLUCION: CORRIJA LOS PARAMETROS DE LA DCB, ESPECIFICANDO   *
+*         | RECFM=FB O COLOQUE LRECL Y BLKSIZE IGUALES.-               *
+*---------|------------------------------------------------------------*
+* 013-64  |SE TRATA DE ACCEDER A UN ARCHIVO MEDIANTE ACCESO DIRECTO    *
+*         |PERO CONSIDERANDOLO NULO .-                                 *
+*        **SOLUCION: ESPECIFICAR EL ARCHIVO REAL .-                    *
+*---------|------------------------------------------------------------*
+* 013-68  |UNA INSTRUCCION ESPECIFICA UN BLKSIZE SUPERIOR  AL MAXIMO   *
+*         |PERMITIDO.-               .-                                *
+*        **SOLUCION: COLOCAR EL BLKSIZE CORRECTO .-                    *
+*---------|------------------------------------------------------------*
+* 013-70  |ERROR EN UN ARCHIVO ALOJADO EN CINTA MAGNETICA, A MENUDO    *
+*         |ES UN PROBLEMA DE DCB O EL BLOQUEO DEL OPERANDO DCB ES      *
+*         |DISTINTO AL BLOQUEO ASIGNADO POR PROGRAMA.-                 *
+*        **SOLUCION: CONTROLAR LA DCB Y EL LABEL.-                     *
+*---------|------------------------------------------------------------*
+* 016     |EN EL OPERANDO FIELDS DE UNA SENTENCIA DE CONTROL DE UN     *
+*         | SORT O MERGE SE HA ESPECIFICADO UN NUMERO DE VALORES       *
+*         | INVALIDO.-                                                 *
+*        **SOLUCION: CHEQUEAR LA VALIDEZ DEL FORMATO DEL OPERANDO      *
+*         |     'FIELDS'  .-                                           *
+*---------|------------------------------------------------------------*
+* 03B     |EL ERROR OCURRE DURANTE LA EJECUCION DE UNA INSTRUCCION     *
+*         |DE INDEX-SECUENCIA Y NO SE PUEDEN PROCESAR LOS REGISTROS    *
+*         |POR UNO DE LOS SIGUIENTES MOTIVO .-                         *
+*         |          1)EL FORMATO 2 DE CONTROL DE ARCHIVO (DSCB)       *
+*         |          INDICA QUE EL ARCHIVO PEDIDO NO HA SIDO CREADO .- *
+*         |          2)EL FORMATO 2 DEL BLOQUE DE CONTROL DE ARCHIVO   *
+*         |          INDICA QUE EL BLOQUE NO HA SIDO CERRADO DESPUES   *
+*         |          DE CREAR UN ARCHIVO.-                             *
+*         |          3)HAY UN ERROR EN LAS ESPECIFICACIONES DE LRECL   *
+          |          O DE BLKSIZE .-LOQUE NO HA SIDO CERRADO DESPUES   *
+*        **SOLUCION: ASEGURESE QUE EL ARCHIVO HA SIDO BIEN CREADO Y QUE*
+*         |          SE HAN CERRADO TODOS LOS ARCHIVOS UTILIZADOS ,    *
+*         |          ADEMAS CONTROLE QUE LOS PARAMETROS BLKSIZE Y LRECL
+          |          HAYAN SIDO ESPECIFICADOS CORRECTAMENTE Y QUE SEAN *
+          |          COMPATIBLES .-                                    *
+*---------|------------------------------------------------------------*
+* S801-1  |PROBLEMAS CON LA DCB,NO COINCIDE LA REAL CON LA ESPECIFICADA*
+*         |EN EL PARAMETRO.-                                           *
+*        **SOLUCION: CAMBIAR LA DCB POR LA CORRESPONDIENTE A LA GRABA- *
+*         |CION , EN CASO DE NO CONOCERLA SE PUEDE RECURRIR A UN PEDIDO*
+*         |DE ROTULO .-                                                *
+*         |***EN SORT *** : POSIBLE DATA CHECK .-                      *
+*        **SOLUCION: CONTROLAR LA DCB Y SI SE ESTA SEGURO DE NO HABER  *
+*         |COMETIDO UN ERROR, ES OBVIO QUE SE TRATA DE UN DATA CHECK.  *
+*         |VOLVER AL PASO EN QUE SE GENERO LA CINTA DE ENTRADA AL SORT *
+*         |DONDE SE PRODUJO LA CANCELACION .-                          *
+ ---------|------------------------------------------------------------*
+* S001-4  |POSIBLE DATA CHECK O MAL POSICIONAMIENTO DE LA CINTA .-     *
+*        **SOLUCION: IDEM 001-01 (EN SORT) , VERIFICAR SI SE TIENE     *
+*         |BACKUP DE LA CINTA EN QUE SE PRODUJO EL DATA CHECK, EN CASO *
+*         |DE SER AFIRMATIVO , REEMPLAZAR DIRECTAMENTE LA CINTA. SI ES *
+*         |EN DISCO , VERIFICAR SI FUE CATALOGADO Y QUE NO TENGA       *
+*         |ORGANIZACION 'NONE'.-                                       *
+*         |POSIBLE FALTA DE ESPACIO PARA ALLOC SECUNDARIA.             *
+          |------------------------------------------------------------*
+*         |*** EN ARCHIVOS AFF *** EL BLOQUEO ESTA DISTINTO AL ORDEN   *
+*         |ESPECIFICADO EN EL JOB CONTROL .-                           *
+*        **SOLUCION: CAMBIAR LOS ARCHIVOS , TENIENDO EN CUENTA QUE LAS *
+*         |DCB'S DE MAYOR BLOQUEO DEBEN IR PRIMERO .-                  *
+ ---------|------------------------------------------------------------*
+* S001-5  |SE INTENTA LEER UN ARCHIVO DESPUES DE HABER SIDO CERRADO .- *
+*        **SOLUCION: DAR DE BAJA. SI ES UN PROCEDIMIENTO NUEVO,CONSUL- *
+*         |TAR CON EL PROGRAMADOR ,SI ES VIEJO Y NO HA SUFRIDO         *
+*         |MODIFICACIONES, VOLVER A CARGAR .-                          *
+ ---------|------------------------------------------------------------*
+* S002    |PROBLEMAS DE PROGRAMA EN EL SORT, SE ENCUENTRAN BLOQUES     *
+*         |DESIGUALES EN MAS O EN MENOS O BIEN TIENE SORTOUT EN DISCO Y*
+*         |EXCEDE LA LONGITUD  DE BLOQUE MAXIMO PERMITIDA .-           *
+*        **SOLUCION: COLOCAR LA LONGITUD DE BLOQUE CORRECTA .-         *
+ ---------|------------------------------------------------------------*
+* S002-18 |PROBLEMAS DE DCB EN UN REGISTRO DE LONGITUD VARIABLE.  EL   *
+*         |REGISTRO ES MAYOR AL BLOQUE ESPECIFICADO EN LA DCB-.        *
+*        **SOLUCION: ARREGLAR LA DCB .-                                *
+*---------|------------------------------------------------------------*
+* S013-04 |EN LA DD SE HA ESPECIFICADO UN LABEL QUE NO ES EL CORRECTO. *
+*        **SOLUCION: ES PROBABLE QUE SE ESTE INTENTANDO LEER UN ARCHIVO*
+*         |EN UN LABEL SUPERIOR AL LABEL EN QUE HA SIDO GRABADO EL     *
+*         |ARCHIVO, O SE QUIERE GRABAR EN UN LABEL SUPERIOR EN MAS DE  *
+*         |UNA UNIDAD AL ULTIMO GRABADO .-                             *
+*---------|------------------------------------------------------------*
+* S013-10 |EN UN DATASET ESPECIFICADO COMO DUMMY NO SE CODIFICO        *
+*         | DCB=BLKSIZE   .-                                           *
+*        **SOLUCION: CODIFICAR LA DBC=BLKSIZE .-                       *
+*---------|------------------------------------------------------------*
+* S237-08 |EL DSN DEL PRIMER CARRETE EN UN ARCHIVO CONCATENADO NO      *
+*         |COINCIDE CON LOS DEMAS .-                                   *
+*        **SOLUCION: ESTE ERROR SE COMPORTA COMO EL 813-04 EN ARCHIVOS *
+*         |NO CONCATENADOS, DE MANERA TAL QUE SE SOLUCIONA BUSCANDO    *
+*         |EL DSN CORRECTO EN EL VUELCO .-                             *
+*---------|------------------------------------------------------------*
+* 2F3     |SE BLOQUEA EL EQUIPO .-                                     *
+*        **SOLUCION: CUANDO SE PRODUCE EL BLOQUEO SE OBSERVA QUE EL    *
+*         |          TRABAJO SE HA IDO EJECUTANDO NORMALMENTE HASTA    *
+*         |          UN DETERMINADO MOMENTO EN QUE APARECEN LAS TARJE- *
+          |          TAS Y LOS PROCEDIMIENTOS.SE HARA UN RESTART DEL   *
+          |          TRABAJO .-                                        *
+*---------|------------------------------------------------------------*
+* 300     |LA CLAVE DE PROTECCION EN DEB(DATA EXTENTDED BOLCK) NO ES   *
+*         |CERO O NO ES IGUAL A LA CLAVE DEL CAMPO DE PROTECCION EN EL *
+*         |BLOQUE DE CONTROL DE TAREAS .-                              *
+*        **SOLUCION: SE DA DE BAJA .-                                  *
+ ---------|------------------------------------------------------------*
+* 313-04  |EL ERROR TIENE LUGAR AL TRATAR CON ARCHIVO ALMACENADO EN UN *
+*         |DISPOSITIVO DE ACCESO DIRECTO. OCURRE EL LA ENTRADA / SALIDA*
+*         |DE DATOS .-                                                 *
+         **SOLUCION: SI ESTA NO FUE DADA POR PROGRAMA , SE PUEDE INTEN-*
+*         |TAR RECUPERAR LA SALIDA CAMBIANDO DE UNIDAD .-              *
+ ---------|------------------------------------------------------------*
+* 322     |DURANTE LA EJECUCION DE UN PROGRAMA , ESTE UTILIZA UN TIEMPO*
+*         |DE CPU MAYOR QUE EL ESPECIFICADO EN EL PARAMETRO TIME DE LA *
+*         |EXEC O DE LA JOB, O EN EL PROCEDIMIENTO CATALOGADO QUE SE   *
+*         |ESTA CORRIENDO .-                                           *
+*        **SOLUCION: SE DEBE ANALIZAR EL PROBLEMA CAUSANTE DE DICHO    *
+*         |CONSUMO DE TIEMPO, PUEDE ESTAR MAL CODIFICADO EL TIME O QUE *
+*         |LOS 2 MIN. CONCEDIDOS POR EL SISTEMA NO SEAN SUFICIENTES ,O *
+*         |PUEDE OCURRIR QUE EL PROGRAMA HAYA ENTRADO EN UN LOOP.-     *
+ ---------|------------------------------------------------------------*
+* 337     |EL ERROR OCURRE AL LLEGAR A UN FIN DE ARCHIVO Y NO EXISTIR  *
+*         |UNA RUTINA PARA EL TRATAMIENTO DE ESTA CONDICION .-         *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR .-                       *
+ ---------|------------------------------------------------------------*
+* 337-04  |SE LLEGO AL FIN DEL ARCHIVO, PERO SE ESPECIFICO UNA RUTINA  *
+*         |DE FIN DE ARCHIVO .-                                        *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR .-                       *
+ ---------|------------------------------------------------------------*
+* 413     |EL ERROR OCURRE DURANTE UNA OPERACION DE OPEN DE UN ARCHIVO *
+*         |EN CINTA O EN DISCO .-                                      *
+ ---------|------------------------------------------------------------*
+* 413-04  |NO HAY UNIDAD DISPONIBLE PARA MONTAR EL VOLUMEN SOLICITADO  *
+*         |EN CINTA O EN DISCO .-                                      *
+*        **SOLUCION: ESPECIFIQUE OTRA UNIDAD EN LA DD .-               *
+ ---------|------------------------------------------------------------*
+* 413-08  |ERROR DE POSICIONAMIENTO AL COLOCAR LA CINTA .-             *
+*        **SOLUCION: VOLVER A CARGAR .-                                *
+ ---------|------------------------------------------------------------*
+* 413-0C  |ERROR AL LEER EL LABEL EN UNA CINTA .-        -             *
+*        **SOLUCION: VOLVER A CARGAR .-                                *
+ ---------|------------------------------------------------------------*
+* 13F-40  |EL ERROR OCURRE AL LEER UNA ETIQUETA STANDARD DE VOLUMEN.-  *
+*        **SOLUCION: INTENTAR UN RESTART .-                            *
+*---------|------------------------------------------------------------*
+* 13F-44  |NO HAY ESPACIO SUFICIENTE PARA EJECUTAR UN RESTART .-       *
+*        **SOLUCION: CONTROLAR EL PARAMETRO UNIT EN LA DD Y ASEGURESE  *
+*         |QUE ESTA RESERVANDO ESPACIO SUFICIENTE PARA SU TRABAJO .-   *
+*---------|------------------------------------------------------------*
+* 13F-50  |EL ERROR HA TENIDO LUGAR DURANTE LA ESCRITURA DE LAS TARJS. *
+S        **SOLUCION: CORRA NUEVAMETE EL TRABAJO .-                     *
+*---------|------------------------------------------------------------*
+* 13F-72  |ESTE MENSAJE APARECE GENERALMENTE CUANDO SE HA DELETEADO    *
+*         |UN ARCHIVO .-                                               *
+*        **SOLUCION: ASEGURESE QUE NO SE HAYA DELETEADO NINGUN ARCHIVO *
+*         |CASO CONTRARIO , VOLVER AL PASO QUE LO GENERO .-            *
+*---------|------------------------------------------------------------*
+* 13F-76  |UN ARCHIVO DE ACCESO DIRECTO OCUPA MAS ESPACIO QUE CUANDO   *
+*         |FUE GENERADO,O SEA,SE OBSERVAN DIFERENCIAS ENTRE EL ESPACIO *
+*         |QUE OCUPABA EN UN PRINCIPIO Y AHORA .-                      *
+*        **SOLUCION: ASEGURESE QUE EL ARCHIVO NO HAYA SIDO REEMPLAZADO *
+*         |POR OTRO . SI ESTO NO HA OCURRIDO , VUELVA A CORRER SU TRA- *
+*         |BAJO .-                                                     *
+*---------|------------------------------------------------------------*
+* 205     |FALTA DE MEMORIA .-                                         *
+*---------|------------------------------------------------------------*
+* 213-04  |SI SE TRATA DE UN CARRETE PUEDE SER UN ERROR DE POSICIONA-  *
+*         |MIENTO , EN EL CASO DE UN DISCO , TRABAJA IGUAL QUE UN DATA *
+*         |SET NOT FOUND .-             -                              *
+*        **SOLUCION: ASEGURESE QUE EL DSN Y EL VOLUMEN COLOCADO EN LA  *
+*         |DD SEAN LOS CORRECTOS .-                                    *
+ ---------|------------------------------------------------------------*
+* 214-04  |EL ERROR OCURRE AL EJECUTAR UNA INSTRUCCIONCLOSE EN UN      *
+*         |ARCHIVO EN CINTA MAGNETICA , O AL PROCESAR UNA ETIQUETA DEL *
+*         |USUARIO .-                                                  *
+         **SOLUCION: ES UN PROBLEMA DE CARRETE .-                      *
+ ---------|------------------------------------------------------------*
+* 214-08  |EL ERROR OCURRE AL POSICIONAR UNA CINTA MAGNETICA DURANTE   *
+*         |LA EJECUCION DE UNA INSTRUCCION DE CIERRE .                 *
+*        **SOLUCION: IDEN ANTERIOR .-                                  *
+ ---------|------------------------------------------------------------*
+* S237-04 |EL ERROR OCURRE AL FINALIZAR EL ARCHIVO. LA CUENTA DE BLO-  *
+*         |QUES EN EL DSN NO COINCIDE CON LOS DADOS EN EL ROTULO DE    *
+*         |COLA .-                                                     *
+*        **SOLUCION: ES PROBABLE QUE SE TRATE DE UN ERROR DE HARDWARE  *
+*         |DEBIDO A QUE SE HA OMITIDO O SALTEADO UN BLOQUE . TRATAR DE *
+*         |LEER CON (2,BLP) PERO TENER CUIDADO QUE SI SE TRATA DE UN   *
+*         |ARCHIVO MULTIVOLUMEN , DBEN ENTRAR LAS CINTAS CONCATENADAS ,*
+*         |CADA UNA DE ELLAS CON SU (2,BLP) .-                         *
+ ---------|------------------------------------------------------------*
+* 413-10  |EL ERROR OCURRE AL GRABAR UN TAPE MARK.-                    *
+ ---------|------------------------------------------------------------*
+* 413-13  |EL ERROR OCURRE AL ESCRIBIR EOF AL TERMINAR UN ARCHIVO DE   *
+*         |SALIDA .-                                                   *
+ ---------|------------------------------------------------------------*
+* 413-18  |EL ARCHIVO QUE SE ESPECIFICA SE ABRE PERO NO SE DA LA SE-   *
+*         |CUENCIA DE VOLUMEN EN LA DD .-                              *
+ ---------|------------------------------------------------------------*
+* 413-IC  |SE ESPECIFICA UNA OPERACION DE OPEN DE UN ARCHIVO, PERO EL  *
+*         |NUMERO DE SECUENCIA ASOCIADO CON LA DD ES MAYOR QUE EL      *
+*         |NUMERO DE VOLUMENES QUE CONTIENE EL ARCHIVO .-              *
+*        **SOLUCION: CONTROLE EL NUMERO COLOCADO EN LA DD .-           *
+ ---------|------------------------------------------------------------*
+* 413-20  |ERROR DE E/S AL LEER EL LABEL DE UN DISPOSITIVO DE ACC/DIR. *
+*        **SOLUCION: VOLVER A CARGAR .-                                *
+ ---------|------------------------------------------------------------*
+* 413-24  |ERROR EN CINTA MAGNETICA. EN LA DCB SE ESPECIFICA QUE LA    *
+*         |CINTA HA SIDO GRABADA EN 800 BPI Y EN REALIDAD TRABAJA EN   *
+*         |1600 BPI .-                                                 *
+*        **SOLUCION: CAMBIE LA DENSIDAD CODIFICADA EN LA DCB .-        *
+ ---------|------------------------------------------------------------*
+* 414-04  |EL ERROR TIENE LUGAR DURANTE UNA INSTRUCCION CLOSE EN UN    *
+*         |ARCHIVO DE ACCESO DIRECTO .-                                *
+*        **SOLUCION: EL ERROR SE DEBE A LA UNIDAD , EJECUTE NUEVAMENTE *
+*         |EL TRABAJO ESPECIFICANDO OTRA UNIDAD .-                     *
+*---------|------------------------------------------------------------*
+* 422     |EXCESO DE PASOS .-                                          *
+*        **SOLUCION: CONTROLAR Y VOLVER A SUBMITIR .-                  *
+*---------|------------------------------------------------------------*
+* 513-04  |EL ERROR TIENE LUGAR DURANTE UNA INSTRUCCION OPEN EN CINTA  *
+*         |MAGNETICA. SE PRETENDE ABRIR UN ARCHIVO QUE YA HA SIDO      *
+*         |ABIERTO .-                                                  *
+*        **SOLUCION: ANTES DE ABRIR UN SEGUNDO ARCHIOVO ASEGURESE QUE  *
+*         |EL PRIMERO HA SIDO CERRADO O QUE TIENE DISPONIBLE LA UNIDAD *
+*         |PARA EL .-                                                  *
+*---------|------------------------------------------------------------*
+* 519     |HA QUEDADO ABIERTO ALGUN ARCHIVO .-                         *
+*        **SOLUCION: EN MANOS DEL PROGRAMADOR .-                       *
+*---------|------------------------------------------------------------*
+*-FIN-----|------------------------------------------------------------*
+    IN VAL(CODE='001' EXPLANATION='I/O ERROR AT END-OF-VOLUME    ')     06080000
+    IN VAL(CODE='002' EXPLANATION='I/O ERROR FOR SEQUENTIAL FILES')     06090000
+    IN VAL(CODE='003' EXPLANATION='I/O ERROR AT END-OF-BLOCK     ')     06100000
+    IN VAL(CODE='004' EXPLANATION='OPEN ERROR, CONFLICTING DCB   ')     06110000
+    IN VAL(CODE='005' EXPLANATION='I/O ERROR, INV DECB FOR BSAM  ')     06120000
+    IN VAL(CODE='008' EXPLANATION='ERROR IN EXECUTING SYNAD      ')     06130000
+    IN VAL(CODE='013' EXPLANATION='OPEN ERROR                    ')     06140000
+    IN VAL(CODE='014' EXPLANATION='CLOSE ERROR FOR BDAM          ')     06150000
+    IN VAL(CODE='020' EXPLANATION='OPEN ERROR FOR BDAM           ')     06160000
+    IN VAL(CODE='0C1' EXPLANATION='OPERATION EXCEPTION           ')     06170000
+    IN VAL(CODE='0C2' EXPLANATION='PRIVILIG-OPER EXCEPTION       ')     06180000
+    IN VAL(CODE='0C3' EXPLANATION='EXECUTE EXCEPTION             ')     06190000
+    IN VAL(CODE='0C4' EXPLANATION='INVALID VIRTUAL ADDRESS       ')     06200000
+    IN VAL(CODE='0C5' EXPLANATION='ADDRESSING EXCEPTION          ')     06210000
+    IN VAL(CODE='0C6' EXPLANATION='SPECIFICATION EXCEPTION       ')     06220000
+    IN VAL(CODE='0C7' EXPLANATION='DATA EXCEPTION                ')     06230000
+    IN VAL(CODE='0C8' EXPLANATION='FIXED-POINT OVERFLOW          ')     06240000
+    IN VAL(CODE='0C9' EXPLANATION='FIXED-POINT DIVIDE EXCEPTION  ')     06250000
+    IN VAL(CODE='0CA' EXPLANATION='DECIMAL OVERFLOW EXCEPTION    ')     06260000
+    IN VAL(CODE='0CB' EXPLANATION='DECIMAL DIVIDE EXCEPTION      ')     06270000
+    IN VAL(CODE='0CC' EXPLANATION='EXPONENT OVERFLOW EXCEPTION   ')     06280000
+    IN VAL(CODE='0CD' EXPLANATION='EXPONENT UNDERFLOW EXCEPTION  ')     06290000
+    IN VAL(CODE='0CE' EXPLANATION='SIGNIFICANCE EXCEPTION        ')     06300000
+    IN VAL(CODE='0CF' EXPLANATION='FLOAT-POINT DIVIDE EXCEPTION  ')     06310000
+    IN VAL(CODE='104' EXPLANATION='GETMAIN ERROR FOR AUTH PGM    ')     06320000
+    IN VAL(CODE='106' EXPLANATION='LINK, LOAD, ATTACH, XCTL ERROR')     06330000
+    IN VAL(CODE='10A' EXPLANATION='GETMAIN ERROR FOR AUTH PGM    ')     06340000
+    IN VAL(CODE='213' EXPLANATION='OPEN ERROR ON DASD            ')     06350000
+    IN VAL(CODE='214' EXPLANATION='CLOSE ERROR ON TAPE           ')     06360000
+    IN VAL(CODE='222' EXPLANATION='OPERATOR CANCEL               ')     06370000
+    IN VAL(CODE='305' EXPLANATION='FREEMAIN ERROR                ')     06380000
+    IN VAL(CODE='30A' EXPLANATION='FREEMAIN ERROR                ')     06390000
+    IN VAL(CODE='313' EXPLANATION='OPEN ERROR ON DASD            ')     06400000
+    IN VAL(CODE='314' EXPLANATION='CLOSE ERROR ON DASD           ')     06410000
+    IN VAL(CODE='322' EXPLANATION='EXCEEDED TIME                 ')     06420000
+    IN VAL(CODE='40A' EXPLANATION='FREEMAIN ERROR                ')     06430000
+    IN VAL(CODE='413' EXPLANATION='OPEN ERROR ON TAPE            ')     06440000
+    IN VAL(CODE='414' EXPLANATION='CLOSE ERROR ON DASD           ')     06450000
+    IN VAL(CODE='513' EXPLANATION='OPEN ERROR ON TAPE            ')     06460000
+    IN VAL(CODE='613' EXPLANATION='OPEN ERROR ON TAPE            ')     06470000
+    IN VAL(CODE='614' EXPLANATION='CLOSE ERROR ON DASD           ')     06480000
+    IN VAL(CODE='706' EXPLANATION='LINK, LOAD, ATTACH, XCTL ERROR')     06490000
+    IN VAL(CODE='713' EXPLANATION='OPEN ERROR ON TAPE            ')     06500000
+    IN VAL(CODE='714' EXPLANATION='CLOSE ERROR ON TAPE           ')     06510000
+    IN VAL(CODE='804' EXPLANATION='GETMAIN ERROR                 ')     06520000
+    IN VAL(CODE='806' EXPLANATION='LINK, LOAD, ATTACH, XCTL ERROR')     06530000
+    IN VAL(CODE='80A' EXPLANATION='GETMAIN ERROR                 ')     06540000
+    IN VAL(CODE='813' EXPLANATION='OPEN ERROR ON TAPE            ')     06550000
+    IN VAL(CODE='906' EXPLANATION='LINK, LOAD, ATTACH, XCTL ERROR')     06560000
+    IN VAL(CODE='913' EXPLANATION='OPEN ERROR                    ')     06570000
+    IN VAL(CODE='A13' EXPLANATION='OPEN ERROR ON TAPE            ')     06580000
+    IN VAL(CODE='A14' EXPLANATION='CLOSE ERROR ON DASD           ')     06590000
+    IN VAL(CODE='B37' EXPLANATION='NO SPACE AVAILABLE ON VOLUME  ')     06600000
+    IN VAL(CODE='C13' EXPLANATION='OPEN ERROR FOR CONCAT PDS     ')     06610000
+    IN VAL(CODE='D13' EXPLANATION='OPEN ERROR FOR GRAPHIC DCB    ')     06620000
+    IN VAL(CODE='D37' EXPLANATION='NO MORE PRIMARY SPACE         ')     06630000
+    IN VAL(CODE='E37' EXPLANATION='NO SPACE AVAILABLE ON VOLUME  ')     06640000
+õ

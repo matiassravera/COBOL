@@ -1,0 +1,292 @@
+Printout of SQLcodes for DB2, Version 7 SQLcodes 
+SQLCODES for DB2 Version 8 from the IBM manual GC18-7422-0 04/06/05 
+Abend codes / System Completion Codes 
+Use IBM's LookAt to find text in IBM manuals that explains error messages from IBM LookAt Explain error messages in ZOS, VM, VSE, AIX, Linux. 
+
+
+VSAM file status codes or keys in a COBOL program, and their meanings.
+
+VSAM error codes which appear on the MVS job log and on the console.
+
+******* you may copy this COBOL code and put it into your COBOL progrqam
+******* to handle vsam and qsam file return codes and error codes
+000100 FILE-CONTROL.
+000200     SELECT VSAM-FILE ASSIGN VSAMFILE
+000300        ORGANIZATION IS INDEXED
+000400        ACCESS MODE  IS SEQUENTIAL
+000500        RECORD KEY   IS VSAM-RECORD-KEY
+000600        FILE STATUS  IS VSAM-STATUS-CODE
+000700                        VSAM-EXTENDED-STATUS-CODE.
+000800
+000900 DATA DIVISION.
+001000 FILE SECTION.
+001100
+001200 FD  VSAM-FILE.
+001300 01  VSAM-RECORD.
+001400     05  VSAM-RECORD-KEY         PIC X(20).
+001500     05  VSAM-EMP-INFO           PIC X(60).
+001600
+001700 WORKING-STORAGE SECTION.
+001800
+001900 01  VSAM-STATUS-CODE.
+002000     05 VSAM-STATUS-CODE-BYTE1   PIC X.
+002100     05 VSAM-STATUS-CODE-BYTE2   PIC X.
+002200
+002300 01  VSAM-EXTENDED-STATUS-CODE.
+002400     05 VSAM-EXTENDED-RETURN-CODE   PIC S9(4) COMP.
+002500     05 VSAM-EXTENDED-FUNCTION-CODE PIC S9(4) COMP.
+002600     05 VSAM-EXTENDED-FEEDBACK-CODE PIC S9(4) COMP.
+002700
+002701*   From http://www.theamericanprogrammer.com commercial use 
+002702*   or resale of this document is a violation of copyright laws.
+002800 EVALUATE-VSAM-STATUS-CODE.
+002900*    THIS WILL DISPLAY DIAGNOSTIC MESSAGES
+003000*    FOR VSAM STATUS CODES AS WELL AS ORDINARY SEQUENTIAL
+003100     DISPLAY 'FILE STATUS CODE:' VSAM-STATUS-CODE
+003200     EVALUATE VSAM-STATUS-CODE
+003300     WHEN '00' DISPLAY 'SUCCESSFUL COMPLETION'
+003400     WHEN '02' DISPLAY 'DUPLICATE KEY, NON UNIQ. ALT INDX'
+003500     WHEN '04' DISPLAY 'READ, WRONG LENGTH RECORD'
+003600     WHEN '05' DISPLAY 'OPEN, FILE NOT PRESENT'
+003700     WHEN '07' DISPLAY 'CLOSE OPTION INCOMPAT FILE DEVICE'
+003800               DISPLAY 'OPEN IMPLIES TAPE; TAPE NOT USED'
+003900     WHEN '10' DISPLAY 'END OF FILE'
+004000     WHEN '14' DISPLAY 'RRN > RELATIVE KEY DATA'
+004100     WHEN '20' DISPLAY 'INVALID KEY VSAM KSDS OR RRDS'
+004200     WHEN '21' DISPLAY 'SEQUENCE ERROR, ON WRITE'
+004300               DISPLAY 'OR CHANGING KEY ON REWRITE'
+004400     WHEN '22' DISPLAY 'DUPLICATE KEY'
+004500     WHEN '23' DISPLAY 'RECORD OR FILE NOT FOUND'
+004600     WHEN '24' DISPLAY 'BOUNDARY VIOLATION.'
+004700               DISPLAY 'WRITE PAST END OF KSDS RECORD '
+004800               DISPLAY 'COBOL 370: REL: REC# TOO BIG'
+004900               DISPLAY 'OUT OF SPACE ON KSDS/RRDS FILE'
+005000     WHEN '30' DISPLAY 'PERMANENT DATA ERROR'
+005100               DISPLAY 'DATA CHECK, PARITY CHK, HARDW'
+005200     WHEN '34' DISPLAY 'BOUNDARY VIOLATION'
+005300               DISPLAY 'WRITE PAST END OF ESDS RECORD'
+005400               DISPLAY 'OR NO SPACE TO ADD KSDS/RRDS RECORD'
+005500               DISPLAY 'OUT OF SPACE ON SEQUENTIAL FILE'
+005600     WHEN '35' DISPLAY 'OPEN, FILE NOT PRESENT'
+005700     WHEN '37' DISPLAY 'OPEN MODE INCOMPAT WITH DEVICE'
+005800     WHEN '38' DISPLAY 'OPENING FILE CLOSED WITH LOCK'
+005900     WHEN '39' DISPLAY 'OPEN, FILE ATTRIB CONFLICTING'
+006000     WHEN '41' DISPLAY 'OPEN, FILE IS OPEN'
+006100     WHEN '42' DISPLAY 'CLOSE, FILE IS CLOSED'
+006200     WHEN '43' DISPLAY 'DELETE OR REWRITE & NO GOOD READ FIRST'
+006300     WHEN '44' DISPLAY 'BOUNDARY VIOLATION/REWRITE REC TOO BIG'
+006400     WHEN '46' DISPLAY 'SEQUENTIAL READ WITHOUT POSITIONING'
+006500     WHEN '47' DISPLAY 'READING FILE NOT OPEN AS INPUT/IO/EXTEND'
+006600     WHEN '48' DISPLAY 'WRITE WITHOUT OPEN IO'
+006700     WHEN '49' DISPLAY 'DELETE OR REWRITE WITHOUT OPEN IO'
+006800     WHEN '90' DISPLAY 'UNKNOWN'
+006900     WHEN '91' DISPLAY 'VSAM - PASSWORD FAILURE'
+007000     WHEN '92' DISPLAY 'LOGIC ERROR/OPENING AN OPEN FILE'
+007100               DISPLAY 'OR READING OUTPUT FILE'
+007200               DISPLAY 'OR WRITE INPUT FILE'
+007300               DISPLAY 'OR DEL/REW BUT NO PRIOR READ'
+007400     WHEN '93' DISPLAY 'VSAM - VIRTSTOR. RESOURCE NOT AVAILABLE'
+007500     WHEN '94' DISPLAY 'VSAM - SEQUENTIAL READ AFTER END OF FILE'
+007600               DISPLAY 'OR NO CURRENT REC POINTER FOR SEQ'
+007700     WHEN '95' DISPLAY 'VSAM - INVALID FILE INFORMATION'
+007800               DISPLAY 'OR OPEN OUTPUT (LOAD) '
+007900               DISPLAY   'WITH FILE THAT NEVER CONTNED DATA'
+008000     WHEN '96' DISPLAY 'VSAM - MISSING DD STATEMENT IN JCL'
+008100     WHEN '97' DISPLAY 'VSAM - OPEN OK, FILE INTEGRITY VERIFIED'
+008200               DISPLAY 'FILE SHOULD BE OK'
+008300     WHEN OTHER DISPLAY 'UNKNOWN REASON' VSAM-STATUS-CODE
+008400     END-EVALUATE.
+008800
+008801*   From http://www.theamericanprogrammer.com commercial use 
+008802*   or resale of this document is a violation of copyright laws.
+008900 EVALUATE-VSAM-EXTENDED-RETURN-CODE.
+009000     EVALUATE VSAM-EXTENDED-RETURN-CODE
+009100     WHEN 0 DISPLAY 'SUCCESSFUL COMPLETION'
+009200     WHEN 4 DISPLAY 'ANOTHER REQUEST IS ACTIVE'
+009300     WHEN 8 DISPLAY 'THERE IS A LOGICAL ERROR'
+009400             PERFORM EVALUATE-LOGICAL-ERROR
+009500     WHEN 12 DISPLAY 'THERE IS A PHYSICAL ERROR'
+009600             PERFORM EVALUATE-PHYSICAL-ERROR
+009700     WHEN OTHER DISPLAY 'UNKNOWN REASON'
+009800     END-EVALUATE.
+009900
+010000 EVALUATE-VSAM-EXTENDED-FUNCTION-CODE.
+010100     EVALUATE VSAM-EXTENDED-FUNCTION-CODE
+010200     WHEN 0 DISPLAY 'ACCESSING BASE CLUSTER, NO PROBLEM'
+010300     WHEN 1 DISPLAY 'ACCESSING BASE CLUSTER, MAY BE A PROBLEM'
+010400     WHEN 2 DISPLAY 'ACCESSING ALTERNATE INDEX, NO PROBLEM'
+010500     WHEN 3 DISPLAY 'ACCESSING ALTERNATE INDEX, MAY BE A PROBLEM'
+010600     WHEN 4 DISPLAY 'UPGRADE PROCESSING, NO PROBLEM'
+010700     WHEN 5 DISPLAY 'UPGRADE PROCESSING, MAY BE A PROBLEM'
+010800     WHEN OTHER DISPLAY 'UNKNOWN REASON'
+010900     END-EVALUATE.
+011000
+011100 EVALUATE-PHYSICAL-ERROR.
+011200*    USE THIS WHEN THERE IS RC 12 IN VSAM-EXTENDED-RETURN-CODE
+011300     EVALUATE VSAM-EXTENDED-FEEDBACK-CODE
+011400     WHEN 4 DISPLAY 'READ ERROR ON DATA'
+011500     WHEN 8 DISPLAY 'READ ERROR ON INDEX'
+011600     WHEN 12 DISPLAY 'READ ERROR IN SEQUENCE SET'
+011700     WHEN 16 DISPLAY 'WRITE ERROR ON DATA'
+011800     WHEN 20 DISPLAY 'WRITE ERROR ON INDEX'
+011900     WHEN 24 DISPLAY 'WRITE ERROR IN SEQUENCE SET'
+012000     WHEN OTHER DISPLAY 'UNKNOWN REASON'
+012100     END-EVALUATE.
+012200
+012300 EVALUATE-LOGICAL-ERROR.
+012400*    USE THIS WHEN THERE IS RC  8 IN VSAM-EXTENDED-RETURN-CODE
+012500     EVALUATE VSAM-EXTENDED-FEEDBACK-CODE
+012600     WHEN   4 DISPLAY 'READ PAST END OF FILE'
+012700     WHEN   8 DISPLAY 'DUPLICATE KEY'
+012800     WHEN  12 DISPLAY 'KEY SEQUENCE ERROR'
+012900     WHEN  16 DISPLAY 'NOT FOUND'
+013000     WHEN  20 DISPLAY 'CONTROL INTERVAL IN USE BY OTHER JOB'
+013100     WHEN  24 DISPLAY 'VOLUME CANNOT BE MOUNTED'
+013200     WHEN  28 DISPLAY 'UNABLE TO EXTEND DATASET'
+013300     WHEN  32 DISPLAY 'RBA NOT FOUND'
+013400     WHEN  36 DISPLAY 'KEY IS NOT IN A DEFINED KEY RANGE'
+013500     WHEN  40 DISPLAY 'INSUFFICIENT VIRTUAL STORAGE'
+013600     WHEN  64 DISPLAY 'NO AVAILABLE STRINGS'
+013700     WHEN  68 DISPLAY 'OPEN DID NOT SPECIFY PROC TYPE'
+013800     WHEN  72 DISPLAY 'KEY ACCESS TO ESDS OR RRDS'
+013900     WHEN  76 DISPLAY 'ATTEMPTED INSERT TO WRONG TYPE DATASET'
+014000     WHEN  80 DISPLAY 'ATTEMPTED DELETE FROM ESDS'
+014100     WHEN  84 DISPLAY 'OPTCD LOC FOR PUT REQUEST'
+014200     WHEN  88 DISPLAY 'POSITION NOT ESTABLISHED'
+014300     WHEN  92 DISPLAY 'PUT WITHOUT GET FOR UPDATE'
+014400     WHEN  96 DISPLAY 'TRYING TO CHANGE PRIMARY KEY'
+014500     WHEN 100 DISPLAY 'TRYING TO CHANGE LRECL'
+014600     WHEN 104 DISPLAY 'INVALID RPL OPTIONS'
+014700     WHEN 108 DISPLAY 'INVALID LRECL'
+014800     WHEN 112 DISPLAY 'INVALID KEY LENGTH'
+014900     WHEN 116 DISPLAY 'VIOLATED LOAD MODE RESTRICTION'
+015000     WHEN 120 DISPLAY 'WRONG TASK SUBMITTING REQUEST'
+015100     WHEN 132 DISPLAY 'TRYING TO GET SPANNED REC IN LOC MODE'
+015200     WHEN 136 DISPLAY 'TRYING TO GET SPANNED REC BY ADDRESS'
+015300              DISPLAY 'IN KSDS'
+015400     WHEN 140 DISPLAY 'INCONSISTENT SPANNED REC'
+015500     WHEN 144 DISPLAY 'ALT INDEX POINTER WITH NO MATCHING'
+015600              DISPLAY 'BASE RECORD'
+015700     WHEN 148 DISPLAY 'EXCEEDED MAX POINTERS IN ALT INDEX REC'
+015800     WHEN 152 DISPLAY 'INSUFFICIENT BUFFERS AVAILABLE'
+015900     WHEN 156 DISPLAY 'INVALID CONTROL INTERVAL'
+016000     WHEN 192 DISPLAY 'INVALID RELATIVE REC NUMBER'
+016100     WHEN 196 DISPLAY 'ATTEMPTED ADDRESSED REQUEST TO RRDS'
+016200     WHEN 200 DISPLAY 'INVALID ACCESS THROUGH A PATH'
+016300     WHEN 204 DISPLAY 'PUT IN BACKWARD MODE'
+016400     WHEN 208 DISPLAY 'INVALID ENDREQ MACRO'
+016500     WHEN OTHER DISPLAY 'UNKNOWN REASON'
+016600     END-EVALUATE.
+016700
+
+From http://www.theamericanprogrammer.com commercial use 
+or resale of this document is a violation of copyright laws.
+
+
+
+VSAM Logical error codes
+These codes indicate VSAM errors. They appear on the JOB log.
+
+  004(04)  Read past end of file
+  008(08)  You attempted to store a record with a Duplicate Key, or there
+           is a duplicate record for an alternate index with the unique
+           key option.
+  012(0C)  You attempted to store a record out of Ascending Key Sequence
+           in Skip-Sequential Mode; record had a Duplicate Key; for
+           Skip-Sequential processing your GET, PUT, and POINT Requests
+           are not referencing records in Ascending Sequence; or, for
+           Skip-Sequential Retrieval, the key requested is lower than the
+           previous key requested.  For Shared Resources, buffer pool is full.
+  016(10)  Record not found.
+  020(14)  Record already held in exclusive control by another requester.
+  024(18)  Record resides on a volume that cannot be mounted.
+  028(1C)  Data set cannot be extended because VSAM can't allocate additional
+           Direct-Access Storage Space.  Either there is not enough space
+           left to make the secondary allocation or you attempted to increase
+           the size of a data set while processing SHROPT=4 and DISP=SHR.
+  036(24)  Key Ranges were specified for the data set when it was defined
+           but no range was specified that includes the record to be inserted.
+  040(28)  Insufficient Virtual Storage to complete the request.
+  044(2A)  Work area too small.
+  064(40)  All available strings are in use.
+  068(44)  You attempted to use a type of processing (Output or Control-Interval
+           Processing) that was not specified when the data set was opened.
+  074(4A)  Trying to use keys on ESDS or RRDS.
+  076(4C)  You issued an Addressed or Control-Interval PUT to add to a
+           Key-Sequenced data set, or issued a Control-Interval put to a
+           Relative Record data set.
+  080(50)  Trying to delete from ESDS.
+  084(54)  Using OPTCODE=LOC for a PUT.
+  088(58)  You issued a Sequential GET request without having caused VSAM
+           to be positioned for it, or you changed from Addressed Access
+           to Keyed Access without causing VSAM to be positioned for Keyed-
+           Sequential Retrieval; there was no Sequential PUT insert for a
+           Relative Record data set, or you attempted an illegal switch
+           between forward and backward processing.
+  92(5C)   A PUT for update or an ERASE was issued without a previous GET
+           for update, or a PUTIX was issued without a previous GETIX.
+  96(60)   Changing the Prime Key or Key of Reference when making an update.
+  100(64   Trying to change record length.
+  104(68)  The RPL options are either invalid or conflicting.
+  108(6C)  RECLEN specified was larger than the maximum allowed, equal to
+           0, or smaller than the sum of the length and the displacement
+           of the key field; RECLEN was not equal to record (SLOT) size
+           specified for a Relative Record data set.
+  112(70)  Invalid key length.
+  116(74)  Trying to update an empty dataset.
+  120(78)  Request was submitted by the wrong task.
+  132(84)  An attempt was made in Locate Mode to retrieve a Spanned Record.
+  136(88)  You attempted an Addressed GET of a Spanned record in a Key-
+           Sequenced data set.
+  140(8C)  Inconsistent Spanned record.
+  144(90)  Invalid pointer (no associated base record) in an Alternate Index.
+  148(94)  Maximum number of Alternate Index pointers exceeded.
+  152(98)  Not enough buffers available.
+  156(9C)  Invalid control interval.
+  192(C0)  Invalid Relative Record number in a RRDS dataset.
+  196(C4)  Addressed access to a Relative Record (RRDS) dataset is not allowed.
+  200(C8)  Addressed Access or Generic Backward processing by Key thru a path is
+           not allowed.
+  204(CC)  Attempting a PUT in backward mode.
+  252(FC)  Record mode processing is not allowed for a Linear data set.
+
+		VSAM Open error codes
+
+  136(88)  Not enough Virtual-Storage Space is available for Work Areas,
+           Control Blocks, or Buffers.
+  144(90)  An uncorrectable I/O error occurred while VSAM was Reading or
+           Writing a catalog record.
+  148(94)  No record for the data set to be opened was found in the
+           available catalog(s) or an unidentified error occurred while
+           VSAM was searching the catalog.
+  152(98)  Security Verification failed; the password specified in the
+           Access-Method Control Block for a specified level of access
+           does not match the password in the catalog for that level of
+           access.
+  164(A4)  An uncorrectable I/O error occurred while VSAM was Reading the
+           Volume Label.
+  168(A8)  The data set is not available for the type of processing you
+           specify, or an attempt was made to open a Reusable data set
+           with the Reset option while another user had the data set.
+  176(B0)  An error occurred while VSAM was attempting to fix a page of
+           Virtual storage in Real storage.
+  180(B4)  A VSAM catalog specified in JCL either does not exist or is
+           not open, and no record for the data set to be opened was
+           found in any other catalog.
+  184(B8)  An uncorrectable I/O error occurred while VSAM was completing
+           an I/O request.
+  188(BC)  The data set indicated by the Access-Method Control Block is
+           not of the type that may be specified by an Access-Method
+           Control Block.
+  192(C0)  An unusable data set was opened for output.
+  232(E8)  Reset was specified for a nonreusable data set and the
+           data set is not empty.
+  236(EC)  A permanent Staging error occurred in MSS (Acquire).
+  244(F4)  The Volume containing the Catalog Recovery area was not
+           mounted and verified for output processing.
+
+
+
+
+These are taken from the book Model Programs in COBOL for Business Applications. 
+
